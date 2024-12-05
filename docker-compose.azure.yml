@@ -1,0 +1,36 @@
+services:
+  track-player-frontend:
+    image: bemuse01/track-player-frontend:latest
+    container_name: track-player-frontend
+    expose:
+      - "3000"
+    depends_on:
+      - track-player-backend
+    env_file:
+      - .env.azure
+    networks:
+      - app-network
+
+  track-player-backend:
+    image: bemuse01/track-player-backend:latest
+    container_name: track-player-backend
+    expose:
+      - "8000"
+    env_file:
+      - .env.azure
+    networks:
+      - app-network
+
+  track-player-nginx:
+    image: bemuse01/track-player-nginx:latest
+    container_name: track-player-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - track-player-frontend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

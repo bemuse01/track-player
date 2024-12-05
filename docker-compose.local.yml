@@ -1,0 +1,47 @@
+services:
+  track-player-frontend:
+    image: bemuse01/track-player-frontend:latest
+    container_name: track-player-frontend
+    expose:
+      - "3000"
+    depends_on:
+      - track-player-backend
+      # track-player-backend:
+      #   condition: service_healthy
+      #   restart: true
+    env_file:
+      - .env.frontend
+    networks:
+      - app-network
+
+  track-player-backend:
+    image: bemuse01/track-player-backend:latest
+    container_name: track-player-backend
+    expose:
+      - "8000"
+    env_file:
+      - .env.backend
+    networks:
+      - app-network
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+    #   interval: 1m
+    #   retries: 3
+    #   start_period: 30s
+    #   timeout: 10s
+
+  track-player-nginx:
+    image: nginx:latest
+    container_name: track-player-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - track-player-frontend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
