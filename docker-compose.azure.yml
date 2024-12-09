@@ -1,6 +1,6 @@
 services:
   track-player-frontend:
-    image: bemuse01/track-player-frontend:latest
+    image: bemuse01/track-player-frontend:v1.0
     container_name: track-player-frontend
     expose:
       - "3000"
@@ -12,7 +12,7 @@ services:
       - app-network
 
   track-player-backend:
-    image: bemuse01/track-player-backend:latest
+    image: bemuse01/track-player-backend:v1.0
     container_name: track-player-backend
     expose:
       - "8000"
